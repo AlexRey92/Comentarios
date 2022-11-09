@@ -18,59 +18,47 @@ import retrofit2.create
 
 class ListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var Adapter:CommentsAdapter
-    private  var listadoDeComentarios= listOf<Comments>()
-
-
+    private var adapter: CommentsAdapter = CommentsAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            // Todo: para que estaria esto si no hace nada?
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val myView:View= inflater.inflate(R.layout.fragment_list, container, false)
-        recyclerView=myView.findViewById(R.id.recyclerview)
+    ): View {
+        val myView:View = inflater.inflate(R.layout.fragment_list, container, false)
+        recyclerView = myView.findViewById(R.id.recyclerview)
         return myView
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.layoutManager=LinearLayoutManager(requireActivity())
-        Adapter= CommentsAdapter()
-        recyclerView.adapter=Adapter
 
-        getComentarios()
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        recyclerView.adapter = adapter
+
+        fetchComments()
     }
 
-    private fun getComentarios() {
+    private fun fetchComments() {
         CoroutineScope(Dispatchers.IO).launch {
-            val call= getrofit().create(ApiService::class.java).getComentarios()
-            val response= call.body()
-            activity?.runOnUiThread{
-                if (call.isSuccessful)
-                    listadoDeComentarios= response!!
-            }?: Adapter.submitList(listadoDeComentarios)
-        }
+            val call = getrofit().create(ApiService::class.java).getComentarios()
+            val response = call.body()
 
+            activity?.runOnUiThread {
+                if (call.isSuccessful) {
+                    response?.apply { adapter.submitList(this) }
+                }
+            }?: adapter.submitList(listOf()) }
         }
     }
 
-    private fun getrofit():Retrofit{
-    return Retrofit.Builder()
+    private fun getrofit() = Retrofit.Builder()
         .baseUrl("https://jsonplaceholder.typicode.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
-    }
-
-
-
-
-
