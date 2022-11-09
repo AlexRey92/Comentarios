@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -12,10 +13,6 @@
         android:name="com.e.apiplaceholder.ListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

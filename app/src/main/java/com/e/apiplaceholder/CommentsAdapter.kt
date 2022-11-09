@@ -9,31 +9,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class CommentsAdapter:ListAdapter<Comments,CommentsAdapter.ViewHolder>(DiffCallBack) {
-    inner class ViewHolder(val view:View):RecyclerView.ViewHolder(view){
-        val postiD:TextView=view.findViewById(R.id.textViewIdPost)
-        val id:TextView=view.findViewById(R.id.textViewID)
-        val name:TextView=view.findViewById(R.id.textViewTitle)
-        val body:TextView=view.findViewById(R.id.textViewBody)
-
-        fun onBind(comentario:Comments){
-            postiD.text=comentario.userId.toString()
-            id.text=comentario.id.toString()
-            name.text=comentario.title
-            body.text=comentario.body
-        }
-
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-    val myview:View=LayoutInflater.from(parent.context).inflate(R.layout.item_task,parent,false)
+        val myview: View = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent,false)
         return ViewHolder(myview)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val bindi=getItem(position)
-        holder.onBind(bindi)
-
-        }
+        val bind = getItem(position)
+        holder.onBind(bind)
+    }
 
     companion object DiffCallBack : DiffUtil.ItemCallback<Comments>() {
         override fun areItemsTheSame(oldItem: Comments, newItem: Comments): Boolean {
@@ -42,6 +27,21 @@ class CommentsAdapter:ListAdapter<Comments,CommentsAdapter.ViewHolder>(DiffCallB
 
         override fun areContentsTheSame(oldItem: Comments, newItem: Comments): Boolean {
             return oldItem == newItem
+        }
+    }
+
+    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+
+        private val postiD = view.findViewById<TextView>(R.id.textViewIdPost)
+        private val id = view.findViewById<TextView>(R.id.textViewID)
+        private val name = view.findViewById<TextView>(R.id.textViewTitle)
+        private val body = view.findViewById<TextView>(R.id.textViewBody)
+
+        fun onBind(comentario: Comments){
+            postiD.text = comentario.userId.toString()
+            id.text = comentario.id.toString()
+            name.text = comentario.title
+            body.text = comentario.body
         }
     }
 }
